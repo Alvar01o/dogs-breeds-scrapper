@@ -1,0 +1,32 @@
+{
+  "name": "breeds-scrapper",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000d\u0000o\u0000g\u0000s\u0000-\u0000b\u0000r\u0000e\u0000e\u0000d\u0000s\u0000-\u0000s\u0000c\u0000r\u0000a\u0000p\u0000p\u0000e\u0000r\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "prebuild": "rm -rf dist/*",
+    "build": "tsc && cp -rf package.json dist/package.json",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node dist/index.js",
+    "dev": "nodemon --watch 'src/**/*.ts' --exec ts-node src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alvar01o/dogs-breeds-scrapper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alvar01o/dogs-breeds-scrapper/issues"
+  },
+  "homepage": "https://github.com/Alvar01o/dogs-breeds-scrapper#readme",
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/cheerio": "^0.22.22"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "ts-node": "^9.0.0"
+  }
+}
