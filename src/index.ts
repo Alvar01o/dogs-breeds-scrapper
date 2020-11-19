@@ -1,35 +1,44 @@
 // index.ts
 
-import axios from 'axios';
-import cheerio from 'cheerio';
+import Scrapper from './Scrapper';
 
-const url = 'https://www.dogbreedinfo.com/abc.htm'; // URL we're scraping
-const AxiosInstance = axios.create(); // Create a new Axios Instance
 
-// Send an async HTTP Get request to the url
-AxiosInstance.get(url)
-  .then( // Once we have data returned ...
-    response => {
-      const html = response.data; // Get the HTML from the HTTP request
-       const $ = cheerio.load(html); // Load the HTML string into cheerio
-        let matches = $('li');
-        let breeds:Array<string> = [];
+let sc = new Scrapper();
+let letters = ["A","B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+let breedsToAdd = [];
+let onDatabaseCounter = 0;
+let onRemoteCounter = 0;
 
-        matches.each(function(index, element){
-            if($(element).text().length > 3 && index < 2351 && index > 40 && $(element).text() !== "X-Y-Z" ) {
-                let par = $(element).text().indexOf("(");
-                if(par == -1) {
-                    breeds.push($(element).text())
-                    console.log($(element).text())
+sc.setRemoteValues().then( breeds => {
+
+    sc.setApiValues().then( (apiBreeds) => 
+    {
+        letters.forEach((letter)=> {
+            for (let index = 0; index <  breeds[letter].length; index++) { //breeds on remote
+                onRemoteCounter++;
+                let exist = false; 
+                if(apiBreeds[letter]!==undefined) {
+
+                    for (let index2 = 0; index2 <  apiBreeds[letter].length; index2++) { //breeds on database
+                        onDatabaseCounter++;
+                        const element =  apiBreeds[letter][index2];
+                        if(breeds[letter][index] == element.name) {
+                            exist = true;
+                        }
+                    }
+                    if (!exist) {
+                        breedsToAdd.push(breeds[letter][index]);
+                        //add to the  api
+                    }
                 } else {
-                    breeds.push($(element).text().slice(0, par))
-                    console.log($(element).text().slice(0, par))
+                    breedsToAdd.push(breeds[letter][index]);
                 }
-
-
             }
-        })
-        console.log("Total items added : " + breeds.length);
-   }
-  )
-  .catch(console.error); // Error handling
+        });
+        console.log("Total to add :" , breedsToAdd.length);
+        console.log(breedsToAdd)
+    }).catch( (error) => 
+    {
+        console.log(error)
+    })
+});
