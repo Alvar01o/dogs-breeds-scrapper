@@ -10,7 +10,7 @@ interface Pets {
 
 class Scrapper {
 
-    private currentEndpoint:string= "testapi.example.com";
+    private currentEndpoint:string= "testapi.example.com/breeds";
     private url:string = 'https://www.dogbreedinfo.com/abc.htm'; // URL we're scraping
     private AxiosInstance = axios.create(); // Create a new Axios Instance
     private breeds = {};
